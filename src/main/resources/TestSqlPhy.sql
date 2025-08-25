@@ -3,11 +3,12 @@ CREATE DATABASE test;
 USE test;
 
 DROP TABLE IF EXISTS blog;
+-- Estos nombres tienen que coincidir en JPA de java
 CREATE TABLE IF NOT EXISTS blog (
  id_b INT AUTO_INCREMENT PRIMARY KEY,
  title_b VARCHAR(60),
  content_b TEXT not NULL,
- category_b VARCHAR(30) not NULL,
+ category_b VARCHAR(30),
  tags_b JSON,
  create_date DATE,
  update_date DATE
