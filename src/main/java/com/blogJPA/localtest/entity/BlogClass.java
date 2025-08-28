@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 //Los elementos/names deben de coincidir con los atributos reales de la base de datos.
 @Entity
@@ -16,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Content {
+public class BlogClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_b")//Este parámetro es igual en el archivo MainController y MySQL

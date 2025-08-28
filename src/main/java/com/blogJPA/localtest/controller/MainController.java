@@ -1,6 +1,7 @@
 package com.blogJPA.localtest.controller;
 
-import com.blogJPA.localtest.entity.Content;
+import com.blogJPA.localtest.classBox.BlogDTO;
+import com.blogJPA.localtest.entity.BlogClass;
 import com.blogJPA.localtest.service.BlogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class MainController {
     //Ruta + parámetro /api/content?id_b=x
     //Leer un solo contenido en específico por ID .
     @RequestMapping(value = "/content", params = "id_b", method = RequestMethod.GET)
-    public ResponseEntity<Content> getContent(@RequestParam Integer id_b) {
+    public ResponseEntity<BlogClass> getContent(@RequestParam Integer id_b) {
 
         return blogService.readOne(id_b)
                 .map(ResponseEntity::ok)//200 Http bien
@@ -32,7 +33,7 @@ public class MainController {
     //Ruta /api/content/all
     //Leer toda la lista de contenidos.
     @GetMapping("/content/all")
-    public ResponseEntity<List<Content>> getContentAll (){
+    public ResponseEntity<List<BlogClass>> getContentAll (){
 
         return ResponseEntity.ok(blogService.readAll());//200 Httpp
 
@@ -43,7 +44,7 @@ public class MainController {
     //Creación por parámetros.
     //Funciona correctamente
     @RequestMapping(value = "/content/insertOne", params = {"content_b", "category_b"}, method = RequestMethod.POST)
-    public ResponseEntity<Content> setContentParam(
+    public ResponseEntity<BlogClass> setContentParam(
             @RequestParam("content_b") String content_bEx,
             @RequestParam("category_b") String category_bEx
     ) {
@@ -55,10 +56,9 @@ public class MainController {
 
     //Ruta /api/content/insert
     //Creación por Entidad.
-    //No funciona bien revisar warning
     @PostMapping("/content/insertTwo")
-    public ResponseEntity<Content> setContentEntity(@RequestBody Content content) throws JsonProcessingException {
-        Content savedContent = blogService.createByObject(content);
+    public ResponseEntity<BlogClass> setContentEntity(@RequestBody BlogClass content) throws JsonProcessingException {
+        BlogClass savedContent = blogService.createByObject(content);
 
         //System.out.println(savedContent.getCategory());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedContent);
@@ -87,8 +87,42 @@ public class MainController {
 
      */
 
+    //  Ruta /api/content/update/{id}/{title}/{content}/{category}/{tags}
+    //  Actualización mediante parámtetros.
+    //  Caso de prueba --> localhost:8080/api/content/update/18/Update/Update/Update/Update
+    @PutMapping("/content/update/{id}/{title}/{content}/{category}/{tags}")
+    public ResponseEntity<BlogClass> updateContent(@PathVariable Integer id,
+                                                   @PathVariable String title,
+                                                   @PathVariable String content,
+                                                   @PathVariable String category,
+                                                   @PathVariable String tags) {
+        return blogService.update(id, title, content, category, tags);
+    }
 
-    
+
+    //  Ruta /api/content/update/{id}/{title}/{content}/{category}/{tags}
+    //  Actualización mediante objeto.
+    /*  Datos de objeto {
+
+
+
+
+
+
+
+       }
+    */
+
+    @PutMapping("/content/update/{id}")
+    public ResponseEntity<BlogClass> updateContentByObject(@PathVariable Integer id,
+                                                           @RequestBody  BlogDTO blog) {
+        return blogService.updateByObj(id, blog );
+    }
+
+
+
+
+
 
 
 
